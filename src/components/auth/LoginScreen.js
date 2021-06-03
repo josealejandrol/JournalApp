@@ -1,28 +1,49 @@
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { useDispatch } from 'react-redux';
-import { login, startGoogleLogin, startLoginEmailPasword } from "../../actions/auth";
+import { useDispatch, useSelector } from "react-redux";
+import validator from "validator";
+import {
+  startGoogleLogin,
+  startLoginEmailPasword,
+} from "../../actions/auth";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.ui);
 
   const [formValues, handleInputChange] = useForm({
-    email: 'jose@email.com',
-    password: '12345678'
-  })
+    email: "jose@email.com",
+    password: "12345678",
+  });
 
-  const {email, password} = formValues;
+  const { email, password } = formValues;
 
   const handleLogin = (e) => {
     e.preventDefault();
+    // console.log('click');
 
     // dispatch(login(123456, 'José Alejandro'))
-    dispatch(startLoginEmailPasword(12345, 'Lázaro'))
-  }
+    if (isFormValid()) {
+      dispatch(startLoginEmailPasword(email, password));
+    }
+  };
 
   const handleGoogleLogin = () => {
     dispatch(startGoogleLogin());
-  }
+  };
+
+  const isFormValid = () => {
+    if (!validator.isEmail(email)) {
+      console.log("Email is required!");
+      console.log(password.length);
+      return false;
+    } else if (password.length === 0) {
+      console.log("Password is required");
+      return false;
+    }
+
+    return true;
+  };
 
   return (
     <>
@@ -48,7 +69,11 @@ export const LoginScreen = () => {
           onChange={handleInputChange}
         />
 
-        <button type="submit" className="btn btn-primary btn-block">
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn btn-primary btn-block"
+        >
           Login
         </button>
 
