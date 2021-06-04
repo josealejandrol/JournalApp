@@ -19,6 +19,8 @@ export const startNewNote = () => async (dispatch, getState) => {
     const doc = await db.collection(`${ uid }/journal/notes`).add( newNote );
 
     dispatch( activeNote( doc.id, newNote ) );
+
+    dispatch( addNewNote( doc.id, newNote ));
     
 }
 
@@ -29,6 +31,14 @@ export const activeNote = (id, note) => ({
         ...note
     }
 });
+
+export const addNewNote = (id, note) => ({
+    type: types.notesAddNew,
+    payload: {
+        id,
+        ...note
+    }
+})
 
 export const startLoadingNotes = ( uid ) => async (dispatch) => {
     const notes = await loadNotes( uid );
@@ -93,3 +103,22 @@ export const startUploading = ( file ) => async (dispatch, getState) => {
     Swal.close();
 
 }
+
+export const startDeleting = (id) => async (dispatch, getState) => {
+
+    const { uid } = getState().auth;
+
+    await db.doc(`${ uid }/journal/notes/${ id }`).delete();
+
+    dispatch( deleteNote( id ));
+
+};
+
+export const deleteNote = (id) => ({
+    type: types.notesDelete,
+    payload: id
+});
+
+export const notesLogout = () => ({
+    type: types.notesLogoutCleaning
+})

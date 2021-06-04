@@ -50,6 +50,8 @@ journal__sidebar-navbar h3 {
     border-radius: 4px;
     color: $dark-grey;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
     overflow: hidden;
 }

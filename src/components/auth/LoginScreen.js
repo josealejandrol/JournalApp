@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
-import {
-  startGoogleLogin,
-  startLoginEmailPasword,
-} from "../../actions/auth";
+import { startGoogleLogin, startLoginEmailPasword } from "../../actions/auth";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -49,7 +46,10 @@ export const LoginScreen = () => {
     <>
       <h3 className="auth__title">Login</h3>
 
-      <form onSubmit={handleLogin}>
+      <form
+        onSubmit={handleLogin}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <input
           autoComplete="off"
           type="text"
